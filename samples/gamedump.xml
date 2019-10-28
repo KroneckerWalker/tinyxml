@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<GameProfile>
+	<Player Name="Nancy" Gender="Female" Age="23"/>
+	<Player Name="Maria" Gender="Female" Age="12">
+		<Hobby Name="Draw" Period="Weekly"/>
+	</Player>
+</GameProfile>
