@@ -38,7 +38,7 @@ namespace tinyxml
 
     private:
         int ParseDeclare();
-        int ParseElement(Element& element, std::string& parentTag);
+        int ParseElement(Element& element, const std::string& parentTag);
         int ParseAttribute(Attribute& attribute);
         int ParseComment();
 

@@ -288,7 +288,7 @@ int Parser::ParseDeclare()
     return SUCCESS;
 }
 
-int Parser::ParseElement(Element& element, std::string& parentTag)
+int Parser::ParseElement(Element& element, const std::string& parentTag)
 {
     const char Init        = 0;
     const char LessThan    = 1; // Read '<'
