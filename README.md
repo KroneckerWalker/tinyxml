@@ -1,6 +1,9 @@
-# tinyxml
 
-A library of parsing xml file.
+###    tinyxml    ####
+
+[repository] (https://github.com/KroneckerWalker/tinyxml.git)
+
+Welcome to **tinyxml**, It's a simple xml file parsing library.
 
 
 Files

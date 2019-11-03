@@ -1,3 +1,20 @@
+// Copyright (C) 2019, Walker
+// Contact: walkerrrr@126.com
+//
+// This file is part of the tinyxml library. This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// Author: walkerrrr@126.com (Walker)
+
+
 #include "../include/error.h"
 
 #include "parser.h"
@@ -23,7 +40,7 @@ int Parser::Do()
 
     if (SUCCESS == ret)
     {
-        ret = ParseElement(rootElement_);
+        ret = ParseElement(rootElement_, std::string(""));
     }
 
     return ret;
@@ -271,7 +288,7 @@ int Parser::ParseDeclare()
     return SUCCESS;
 }
 
-int Parser::ParseElement(Element& element)
+int Parser::ParseElement(Element& element, std::string& parentTag)
 {
     const char Init        = 0;
     const char LessThan    = 1; // Read '<'
@@ -427,16 +444,18 @@ int Parser::ParseElement(Element& element)
         case ElemEmbed:
             for (;;)
             {
-                element.AppendNullElement();
-                Element& elem = element.GetLastChildElement();
-                int ret = ParseElement(elem);
+                Element elem;
+                int ret = ParseElement(elem, element.GetTagName());
                 if (SUCCESS == ret)
                 {
                     // 没有解析到子Element
                     if (elem.IsNull())
                     {
-                        element.RemoveLastElement();
                         return SUCCESS;
+                    }
+                    else
+                    {
+                        element.AppendChildElement(elem);
                     }
                 }
                 else
@@ -451,7 +470,7 @@ int Parser::ParseElement(Element& element)
             ch = ifs_.peek();
             if ('>' == ch || IsSpaceChar(ch))
             {
-                if (0 != endtag.compare(element.GetParentElement().GetTagName()))
+                if (0 != endtag.compare(parentTag))
                 {
                     return ERROR_ElementEnd;
                 }

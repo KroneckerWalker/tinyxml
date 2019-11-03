@@ -1,3 +1,20 @@
+// Copyright (C) 2019, Walker
+// Contact: walkerrrr@126.com
+//
+// This file is part of the tinyxml library. This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// Author: walkerrrr@126.com (Walker)
+
+
 #include "../include/error.h"
 #include "../include/document.h"
 
@@ -10,7 +27,7 @@
 namespace tinyxml
 {
 
-int Document::LoadContent(std::string &file)
+int Document::LoadContent(const std::string &file)
 {
     if (file.empty())
     {
@@ -32,7 +49,7 @@ int Document::LoadContent(std::string &file)
     return SUCCESS;
 }
 
-int Document::DumpContent(std::string &file)
+int Document::DumpContent(const std::string &file)
 {
     if (file.empty())
     {
@@ -58,12 +75,12 @@ int Document::ClearContent()
     return SUCCESS;
 }
 
-Declare& Document::GetDeclear()
+Declare Document::GetDeclear()
 {
     return declare_;
 }
 
-Element& Document::GetElement()
+Element Document::GetElement()
 {
     return element_;
 }

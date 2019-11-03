@@ -1,3 +1,20 @@
+// Copyright (C) 2019, Walker
+// Contact: walkerrrr@126.com
+//
+// This file is part of the tinyxml library. This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// Author: walkerrrr@126.com (Walker)
+
+
 #include "../include/error.h"
 
 #include "dumper.h"
@@ -33,15 +50,15 @@ namespace tinyxml
         ofs_<<"<?xml";
         if (0 != declare_.GetVersion().compare("null"))
         {
-            ofs_<<" version=\""<<declare_.GetVersion().c_str()<<"\"";
+            ofs_<<" version=\""<<declare_.GetVersion()<<"\"";
         }
         if (0 != declare_.GetEncoding().compare("null"))
         {
-            ofs_<<" encoding=\""<<declare_.GetEncoding().c_str()<<"\"";
+            ofs_<<" encoding=\""<<declare_.GetEncoding()<<"\"";
         }
         if (0 != declare_.GetStandalone().compare("null"))
         {
-            ofs_<<" standalone=\""<<declare_.GetStandalone().c_str()<<"\"";
+            ofs_<<" standalone=\""<<declare_.GetStandalone()<<"\"";
         }
         ofs_<<"?>"<<std::endl;
         return SUCCESS;
@@ -64,14 +81,14 @@ namespace tinyxml
         {
             ofs_<<"\t";
         }
-        ofs_<<"<"<<elem.GetTagName().c_str();
+        ofs_<<"<"<<elem.GetTagName();
 
         //Dump Attributes
         if (!attri.empty())
         {
             for(std::list<Attribute>::iterator it = attri.begin(); it != attri.end(); ++it)
             {
-                ofs_<<" "<<(*it).GetName().c_str()<<"=\""<<(*it).GetValue().c_str()<<"\"";
+                ofs_<<" "<<(*it).GetName()<<"=\""<<(*it).GetValue()<<"\"";
             }
         }
         if (hasAttriNoChild)
@@ -97,7 +114,7 @@ namespace tinyxml
             {
                 ofs_<<"\t";
             }
-            ofs_<<"</"<<elem.GetTagName().c_str()<<">"<<std::endl;
+            ofs_<<"</"<<elem.GetTagName()<<">"<<std::endl;
         }
 
         return SUCCESS;

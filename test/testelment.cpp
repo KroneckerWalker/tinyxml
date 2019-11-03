@@ -1,3 +1,20 @@
+// Copyright (C) 2019, Walker
+// Contact: walkerrrr@126.com
+//
+// This file is part of the tinyxml library. This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// Author: walkerrrr@126.com (Walker)
+
+
 #include "gtest/gtest.h"
 #include "../include/tinyxml.h"
 
@@ -83,23 +100,23 @@ TEST(ElementTest, ElementFunctions)
     ele.AppendChildElement(tinyxml::Element("NPC"));
     ele.AppendChildElement(tinyxml::Element("RPG"));
 
-    tinyxml::Element& e1 = ele.GetFirstChildElement();
+    tinyxml::Element e1 = ele.GetFirstChildElement();
     EXPECT_EQ("Player", e1.GetTagName());
-    tinyxml::Element& e2 = ele.GetLastChildElement();
+    tinyxml::Element e2 = ele.GetLastChildElement();
     EXPECT_EQ("RPG", e2.GetTagName());
 
-    tinyxml::Element& e3 = e1.GetParentElement();
+    tinyxml::Element e3 = e1.GetParentElement();
     EXPECT_EQ("Test", e3.GetTagName());
-    tinyxml::Element& e4 = e2.GetParentElement();
+    tinyxml::Element e4 = e2.GetParentElement();
     EXPECT_EQ("Test", e4.GetTagName());
 
-    tinyxml::Element& e5 = e1.GetPreviousSiblingElement();
+    tinyxml::Element e5 = e1.GetPreviousSiblingElement();
     EXPECT_EQ("null", e5.GetTagName());
-    tinyxml::Element& e6 = e1.GetNextSiblingElement();
+    tinyxml::Element e6 = e1.GetNextSiblingElement();
     EXPECT_EQ("NPC", e6.GetTagName());
-    tinyxml::Element& e7 = e2.GetPreviousSiblingElement();
+    tinyxml::Element e7 = e2.GetPreviousSiblingElement();
     EXPECT_EQ("NPC", e7.GetTagName());
-    tinyxml::Element& e8 = e2.GetNextSiblingElement();
+    tinyxml::Element e8 = e2.GetNextSiblingElement();
     EXPECT_EQ("null", e8.GetTagName());
 
     e1.AppendChildElement(tinyxml::Element("Mary"));
@@ -110,33 +127,95 @@ TEST(ElementTest, ElementFunctions)
     e2.AppendChildElement(tinyxml::Element("Artemis"));
 
     ele.RemoveChildElement(e6);
-    tinyxml::Element& e9 = ele.GetFirstChildElement();
+    tinyxml::Element e9 = ele.GetFirstChildElement();
     EXPECT_EQ("Player", e9.GetTagName());
-    tinyxml::Element& ea = ele.GetLastChildElement();
+    tinyxml::Element ea = ele.GetLastChildElement();
     EXPECT_EQ("RPG", ea.GetTagName());
-    tinyxml::Element& eb = ea.GetPreviousSiblingElement();
+    tinyxml::Element eb = ea.GetPreviousSiblingElement();
     EXPECT_EQ("Player", eb.GetTagName());
-    tinyxml::Element& ec = e9.GetNextSiblingElement();
+    tinyxml::Element ec = e9.GetNextSiblingElement();
     EXPECT_EQ("RPG", ec.GetTagName());
 }
 
-TEST(ElementTest, LastElementFunctions)
+
+class CC
 {
-    tinyxml::Element ele("Test");
-    ele.AppendNullElement();
-    tinyxml::Element& e1 = ele.GetLastChildElement();
-    EXPECT_EQ("null", e1.GetTagName());
-    e1.SetTagName("e1");
+public:
+    CC(){c_++;}
+    CC(CC& o){c_++;};
+    CC& operator=(CC& o){c_++;}
+    ~CC(){c_--;}
+    int GetC(){return c_;}
+private:
+    static int c_;
+};
+int CC::c_ = 0;
 
-    ele.AppendNullElement();
-    tinyxml::Element& e2 = ele.GetLastChildElement();
-    EXPECT_EQ("null", e2.GetTagName());
-    e2.SetTagName("e2");
+TEST(ElementTest, ContentPtr)
+{
+    tinyxml::ContentPtr<CC> t0;
+    EXPECT_EQ(1, t0->GetC());
+    EXPECT_EQ(1, (*t0).GetC());
 
-    ele.RemoveLastElement();
-    tinyxml::Element& e = ele.GetLastChildElement();
-    EXPECT_EQ("e1", e.GetTagName());
+    {
+        tinyxml::ContentPtr<CC> t1;
+        EXPECT_EQ(2, t0->GetC());
+        EXPECT_EQ(2, (*t0).GetC());
+        EXPECT_EQ(2, t1->GetC());
+        EXPECT_EQ(2, (*t1).GetC());
 
-    tinyxml::Element& et = e.GetNextSiblingElement();
-    EXPECT_EQ("null", et.GetTagName());
+        {
+            tinyxml::ContentPtr<CC> t2(t0);
+            EXPECT_EQ(2, t0->GetC());
+            EXPECT_EQ(2, (*t0).GetC());
+            EXPECT_EQ(2, t1->GetC());
+            EXPECT_EQ(2, (*t1).GetC());
+            EXPECT_EQ(2, t2->GetC());
+            EXPECT_EQ(2, (*t2).GetC());
+
+            t2 = t1;
+            EXPECT_EQ(2, t0->GetC());
+            EXPECT_EQ(2, (*t0).GetC());
+            EXPECT_EQ(2, t1->GetC());
+            EXPECT_EQ(2, (*t1).GetC());
+            EXPECT_EQ(2, t2->GetC());
+            EXPECT_EQ(2, (*t2).GetC());
+
+            {
+                tinyxml::ContentPtr<CC> t3(t1);
+                EXPECT_EQ(2, t0->GetC());
+                EXPECT_EQ(2, (*t0).GetC());
+                EXPECT_EQ(2, t1->GetC());
+                EXPECT_EQ(2, (*t1).GetC());
+                EXPECT_EQ(2, t2->GetC());
+                EXPECT_EQ(2, (*t2).GetC());
+                EXPECT_EQ(2, t3->GetC());
+                EXPECT_EQ(2, (*t3).GetC());
+
+                t3 = t0;
+                EXPECT_EQ(2, t0->GetC());
+                EXPECT_EQ(2, (*t0).GetC());
+                EXPECT_EQ(2, t1->GetC());
+                EXPECT_EQ(2, (*t1).GetC());
+                EXPECT_EQ(2, t2->GetC());
+                EXPECT_EQ(2, (*t2).GetC());
+                EXPECT_EQ(2, t3->GetC());
+                EXPECT_EQ(2, (*t3).GetC());
+            }
+
+            EXPECT_EQ(2, t0->GetC());
+            EXPECT_EQ(2, (*t0).GetC());
+            EXPECT_EQ(2, t1->GetC());
+            EXPECT_EQ(2, (*t1).GetC());
+            EXPECT_EQ(2, t2->GetC());
+            EXPECT_EQ(2, (*t2).GetC());
+        }
+
+        EXPECT_EQ(2, t0->GetC());
+        EXPECT_EQ(2, (*t0).GetC());
+        EXPECT_EQ(2, t1->GetC());
+        EXPECT_EQ(2, (*t1).GetC());
+    }
+    EXPECT_EQ(1, t0->GetC());
+    EXPECT_EQ(1, (*t0).GetC());
 }

@@ -15,37 +15,15 @@
 // Author: walkerrrr@126.com (Walker)
 
 
-#ifndef tinyxml_DUMPER_H
-#define tinyxml_DUMPER_H
-
-#include "../include/element.h"
-#include "../include/declare.h"
-
-#include <fstream>
+#include "gtest/gtest.h"
 
 
-namespace tinyxml
+GTEST_API_ int main(int argc, char **argv)
 {
+    testing::InitGoogleTest(&argc, argv);
 
-    class Dumper
-    {
-    public:
-        Dumper(Element& elem, Declare& declare, std::ofstream& ofs);
+    testing::TestEventListeners& listeners =  testing::UnitTest::GetInstance()->listeners();
 
-    public:
-        int Do();
-
-    private:
-        int DumpDeclare();
-        int DumpElement();
-        int DumpChildElement(Element& elem, int rank);
-
-    private:
-        Element& rootElement_;
-        Declare& declare_;
-        std::ofstream& ofs_;
-    };
-
+    return RUN_ALL_TESTS();
 }
 
-#endif
