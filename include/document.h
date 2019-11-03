@@ -32,8 +32,11 @@ namespace tinyxml
         int DumpContent(const std::string &file);
         int ClearContent();
 
-        Declare GetDeclear();
+        Declare GetDeclare();
         Element GetElement();
+
+        void SetDeclare(const std::string& version, const std::string& encoding, const std::string& standalone);
+        void SetElementTagName(const std::string& tagName);
 
     private:
         Element element_;

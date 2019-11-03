@@ -20,14 +20,10 @@
 int main(int argc, char* argv[])
 {
     tinyxml::Document doc;
-
-    tinyxml::Declare dec = doc.GetDeclear();
-    dec.SetVersion("1.0");
-    dec.SetEncoding("UTF-8");
+    doc.SetDeclare("1.0", "UTF-8", "yes");
+    doc.SetElementTagName("GameProfile");
 
     tinyxml::Element ele = doc.GetElement();
-    ele.SetTagName("GameProfile");
-
     ele.AppendChildElement(tinyxml::Element("Player"));
     tinyxml::Element child1 = ele.GetLastChildElement();
     child1.SetAttribute(std::string("Name"), std::string("Nancy"));

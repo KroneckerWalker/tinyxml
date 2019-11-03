@@ -75,7 +75,7 @@ int Document::ClearContent()
     return SUCCESS;
 }
 
-Declare Document::GetDeclear()
+Declare Document::GetDeclare()
 {
     return declare_;
 }
@@ -83,6 +83,18 @@ Declare Document::GetDeclear()
 Element Document::GetElement()
 {
     return element_;
+}
+
+void Document::SetDeclare(const std::string& version, const std::string& encoding, const std::string& standalone)
+{
+    declare_.SetVersion(version);
+    declare_.SetEncoding(encoding);
+    declare_.SetStandalone(standalone);
+}
+
+void Document::SetElementTagName(const std::string& tagName)
+{
+    element_.SetTagName(tagName);
 }
 
 }
